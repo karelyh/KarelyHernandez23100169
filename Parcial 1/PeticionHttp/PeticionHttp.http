@@ -1,0 +1,9 @@
+POST https://jsonplaceholder.typicode.com/users
+Content-Type: application/json
+
+{
+  "name": "Karely Hernandez",
+  "correo": "hernandezkarely729@gmail.com",
+  "numcontrol": "23100169",
+  "fechaNacimiento": "03-11-2005"
+}
