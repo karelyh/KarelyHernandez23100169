@@ -3,7 +3,10 @@ const morgan = require('morgan');
 
 const app = express();
 
-app.use(morgan('dev'));
+// para morgan
+app.use(morgan((tokens, req, res) => {
+    return `${tokens.method(req, res)} ${tokens.url(req, res)} - ${res.locals.pelicula} - ${new Date().toLocaleTimeString()}`;
+}));
 
 const peliculas = [
     {
