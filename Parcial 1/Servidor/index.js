@@ -1,6 +1,9 @@
 const express = require('express');
+const morgan = require('morgan');
 
 const app = express();
+
+app.use(morgan('dev'));
 
 const peliculas = [
     {
@@ -26,6 +29,7 @@ const peliculas = [
     }
 ];
 
+// para el router
 const routerPeliculas = require('./routers/routerPeliculas')(peliculas);
 
 // Ruta principal
@@ -33,10 +37,9 @@ app.get('/', (req, res) => {
     res.send('El servidor está funcionando correctamente');
 });
 
-//  usar el router
 app.use('/peliculas', routerPeliculas);
 
-
+// para iniciar el server 
 app.listen(3000, () => {
     console.log('Servidor ejecutándose en http://localhost:3000');
 });
