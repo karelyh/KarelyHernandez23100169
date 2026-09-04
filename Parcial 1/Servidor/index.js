@@ -3,10 +3,8 @@ const morgan = require('morgan');
 
 const app = express();
 
-// para morgan
-app.use(morgan((tokens, req, res) => {
-    return `${tokens.method(req, res)} ${tokens.url(req, res)} - ${res.locals.pelicula} - ${new Date().toLocaleTimeString()}`;
-}));
+// Para Morgan
+app.use(morgan('dev'));
 
 const peliculas = [
     {
@@ -32,7 +30,7 @@ const peliculas = [
     }
 ];
 
-// para el router
+// Para el router
 const routerPeliculas = require('./routers/routerPeliculas')(peliculas);
 
 // Ruta principal
@@ -40,9 +38,10 @@ app.get('/', (req, res) => {
     res.send('El servidor está funcionando correctamente');
 });
 
+// Usar router
 app.use('/peliculas', routerPeliculas);
 
-// para iniciar el server 
+// Iniciar servidor
 app.listen(3000, () => {
     console.log('Servidor ejecutándose en http://localhost:3000');
 });
