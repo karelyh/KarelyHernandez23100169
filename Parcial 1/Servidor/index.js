@@ -1,10 +1,16 @@
 const express = require('express');
+const path = require('path');
 const morgan = require('morgan');
 
 const app = express();
 
+// Configuración del motor de vistas
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 // Para Morgan
 app.use(morgan('dev'));
+app.use('/files', express.static(path.join(__dirname, 'routers', 'files')));
 
 const peliculas = [
     {
@@ -12,21 +18,32 @@ const peliculas = [
         titulo: "10 cosas que odio de ti",
         genero: "Romance / Comedia",
         año: 1999,
-        duracion: 97
+        duracion: 97,
+        foto: "10CosasQueOdioDeTi.jpg"
     },
     {
         id: 8,
         titulo: "Coco",
         genero: "Animación / Fantasía",
         año: 2017,
-        duracion: 105
+        duracion: 105,
+        foto: "coco.jpeg"
     },
     {
         id: 16,
         titulo: "Yo antes de ti",
         genero: "Drama / Romance",
         año: 2016,
-        duracion: 110
+        duracion: 110,
+        foto: "yo_antes_de_ti.jpg"
+    },
+    {
+        id: 19,
+        titulo: "Yo antes de ti pug version",
+        genero: "Drama / Romance",
+        año: 2016,
+        duracion: 110,
+        foto: "yoantesdetipug.jpg"
     }
 ];
 
@@ -35,7 +52,17 @@ const routerPeliculas = require('./routers/routerPeliculas')(peliculas);
 
 // Ruta principal
 app.get('/', (req, res) => {
-    res.send('El servidor está funcionando correctamente');
+    res.render('index', {
+        titulo: 'Servidor funcionando'
+    });
+});
+
+// Ruta para mostrar la vista con las películas
+app.get('/peliculas/vista', (req, res) => {
+    res.render('peliculas', {
+        titulo: 'Listado de películas',
+        peliculas: peliculas
+    });
 });
 
 // Usar router
