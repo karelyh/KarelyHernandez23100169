@@ -4,7 +4,7 @@ const morgan = require('morgan');
 
 const app = express();
 
-// Configuración del motor de vistas
+// para las vistas
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
