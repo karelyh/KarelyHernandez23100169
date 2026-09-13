@@ -51,11 +51,12 @@ module.exports = (peliculas) => {
     });
 
     // GET /peliculas/:id
-    router.get('/:id', validarId, (req, res) => {
-        const id = parseInt(req.params.id);
-        const pelicula = peliculas.find(pelicula => pelicula.id === id);
+    router.get('/:id', validarId, (req, res, next) => {
+    const id = parseInt(req.params.id);
+    const pelicula = peliculas.find(pelicula => pelicula.id === id);
+
         if (!pelicula) {
-            const error = new Error('Película no encontrada');
+            const error = new Error('Película no encontrada.');
             error.status = 404;
             return next(error);
         }
