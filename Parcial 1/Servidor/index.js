@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
+const manejarError = require('./middlewares/errores');
 
 const app = express();
 
@@ -67,6 +68,9 @@ app.get('/peliculas/vista', (req, res) => {
 
 // Usar router
 app.use('/peliculas', routerPeliculas);
+
+// Manejador central de errores
+app.use(manejarError);
 
 // Iniciar servidor
 app.listen(3000, () => {

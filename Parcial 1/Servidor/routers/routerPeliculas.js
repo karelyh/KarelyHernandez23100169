@@ -20,22 +20,28 @@ module.exports = (peliculas) => {
     const validarId = (req, res, next) => {
         const id = req.params.id;
         if (isNaN(id)) {
-            return res.status(400).json({
-                error: "Petición incorrecta",
-                mensaje: "El ID proporcionado debe ser un número válido."
-            });
+            const error = new Error('El ID proporcionado debe ser un número válido.');
+            error.status = 400;
+
+            return next(error);
         }
         next();
     };
 
     // POST /peliculas/archivo
-    router.post('/archivo', upload.single('archivo'), (req, res) => {
+    router.post('/archivo', upload.single('archivo'), (req, res, next) => {
+
+        if (!req.file) {
+            const error = new Error('No se recibió ningún archivo.');
+            error.status = 400;
+
+            return next(error);
+        }
 
         res.json({
             mensaje: "Archivo recibido correctamente",
             archivo: req.file.originalname
         });
-
     });
 
     // GET /peliculas/pelicula/:pelicula
@@ -49,9 +55,9 @@ module.exports = (peliculas) => {
         const id = parseInt(req.params.id);
         const pelicula = peliculas.find(pelicula => pelicula.id === id);
         if (!pelicula) {
-            return res.status(404).json({
-                mensaje: "Película no encontrada"
-            });
+            const error = new Error('Película no encontrada');
+            error.status = 404;
+            return next(error);
         }
         res.json(pelicula);
     });
