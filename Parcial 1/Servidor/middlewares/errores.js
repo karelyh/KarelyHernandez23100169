@@ -17,12 +17,14 @@ const logger = winston.createLogger({
         winston.format.timestamp({
             format: 'YYYY-MM-DD HH:mm:ss'
         }),
-        winston.format.simple()
+        winston.format.printf(({ timestamp, level, message }) => {
+            return `${timestamp} | ${level.toUpperCase()} | ${message}`;
+        })
     ),
 
     transports: [
         new winston.transports.File({
-            filename: path.join(carpetaLogs, 'errores.log')
+            filename: path.join(carpetaLogs, 'errores.txt')
         }),
         new winston.transports.Console()
     ]
@@ -35,14 +37,18 @@ const manejarError = (err, req, res, next) => {
 
     let mensaje = err.message || 'Ocurrió un error en el servidor.';
 
-    // No mostrar información interna si es un error del servidor
+    // No mostrar información interna de errores 500
     if (status >= 500) {
         mensaje = 'Ocurrió un error interno en el servidor.';
     }
 
-    // Guardar información del error en el log
+    // Información que se guardará en el archivo de texto
+    const usuario = req.ip;
+    const metodo = req.method;
+    const ruta = req.originalUrl;
+
     logger.error(
-        `${req.method} ${req.originalUrl} - ${status} - ${err.message}`
+        `Usuario: ${usuario} | ${metodo} ${ruta} | Error ${status} | ${err.message}`
     );
 
     // Respuesta estándar

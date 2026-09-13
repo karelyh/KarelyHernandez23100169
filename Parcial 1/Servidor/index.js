@@ -66,6 +66,13 @@ app.get('/peliculas/vista', (req, res) => {
     });
 });
 
+// Página de documentación de errores
+app.get('/errores', (req, res) => {
+    res.render('errores', {
+        titulo: 'Documentación de errores'
+    });
+});
+
 // Usar router
 app.use('/peliculas', routerPeliculas);
 

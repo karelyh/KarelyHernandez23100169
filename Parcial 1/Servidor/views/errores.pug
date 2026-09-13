@@ -1,0 +1,33 @@
+doctype html
+
+html
+    head
+        title= titulo
+
+    body
+        h1= titulo
+
+        h2 Errores comunes
+
+        h3 Error 400 - Petición incorrecta
+        p Se produce cuando los datos enviados por el usuario no son válidos.
+        p Ejemplo: proporcionar un ID que no sea un número.
+
+        h3 Error 404 - Recurso no encontrado
+        p Se produce cuando el recurso solicitado no existe.
+        p Ejemplo: buscar una película con un ID que no está registrado.
+
+        h3 Error 500 - Error interno del servidor
+        p Se produce cuando ocurre un problema inesperado en el servidor.
+        p El usuario recibe un mensaje general y los detalles se guardan en el archivo de log.
+
+        h2 Respuesta estándar
+
+        pre
+            | {
+            |     "error": true,
+            |     "status": 404,
+            |     "mensaje": "Película no encontrada."
+            | }
+
+        a(href="/") Regresar al inicio
