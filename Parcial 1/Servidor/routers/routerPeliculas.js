@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const halson = require('halson');
 
 const router = express.Router();
 
@@ -60,7 +61,11 @@ module.exports = (peliculas) => {
             error.status = 404;
             return next(error);
         }
-        res.json(pelicula);
+        //para que pase la respuesta por halson
+        const respuesta = halson(pelicula)
+        .addLink('self', `/peliculas/${pelicula.id}`)
+        .addLink('peliculas', '/peliculas');
+        res.json(respuesta);
     });
 
     return router;

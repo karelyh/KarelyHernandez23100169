@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "soap": "^1.13.0"
+  },
+  "name": "soap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
