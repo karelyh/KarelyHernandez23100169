@@ -50,44 +50,67 @@ WSDL permite que una aplicación conozca de manera precisa cómo utilizar un Web
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-
-<definitions
-    name="CalculadoraService"
-    targetNamespace="http://ejemplo.com/calculadora"
-    xmlns:tns="http://ejemplo.com/calculadora"
-    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns="http://schemas.xmlsoap.org/wsdl/">
+<definitions name="CalculadoraService"
+             targetNamespace="http://ejemplo.com/calculadora"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://ejemplo.com/calculadora"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
     <types>
-        <!-- Tipos de datos -->
+        <xsd:schema targetNamespace="http://ejemplo.com/calculadora">
+            <xsd:element name="sumarRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="a" type="xsd:int"/>
+                        <xsd:element name="b" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="sumarResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="resultado" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
     </types>
 
-    <message name="sumarRequest">
-        <!-- Datos de entrada -->
+    <message name="sumarRequestMessage">
+        <part name="parameters" element="tns:sumarRequest"/>
     </message>
 
-    <message name="sumarResponse">
-        <!-- Datos de salida -->
+    <message name="sumarResponseMessage">
+        <part name="parameters" element="tns:sumarResponse"/>
     </message>
 
     <portType name="CalculadoraPortType">
         <operation name="sumar">
-            <input message="tns:sumarRequest"/>
-            <output message="tns:sumarResponse"/>
+            <input message="tns:sumarRequestMessage"/>
+            <output message="tns:sumarResponseMessage"/>
         </operation>
     </portType>
 
-    <binding name="CalculadoraBinding"
-             type="tns:CalculadoraPortType">
-        <!-- Configuración de SOAP -->
+    <binding name="CalculadoraSoapBinding" type="tns:CalculadoraPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="sumar">
+            <soap:operation soapAction="http://ejemplo.com/calculadora/sumar"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
     </binding>
 
     <service name="CalculadoraService">
-        <port name="CalculadoraPort"
-              binding="tns:CalculadoraBinding">
-            <soap:address location="http://ejemplo.com/calculadora"/>
+        <port name="CalculadoraPort" binding="tns:CalculadoraSoapBinding">
+            <soap:address location="http://ejemplo.com/calculadora/soap"/>
         </port>
     </service>
 
 </definitions>
+```
