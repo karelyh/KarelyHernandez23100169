@@ -14,6 +14,9 @@ const autenticacion = basicAuth({
     challenge: true
 });
 
+//para q todas las rutas requieran autorizacion
+app.use(autenticacion);
+
 // para las vistas
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -83,7 +86,7 @@ app.get('/errores', (req, res) => {
 });
 
 // Usar router
-app.use('/peliculas', autenticacion, routerPeliculas);
+app.use('/peliculas', routerPeliculas);
 
 // Manejador central de errores
 app.use(manejarError);
