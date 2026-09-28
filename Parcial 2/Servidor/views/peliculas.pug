@@ -1,0 +1,18 @@
+doctype html
+
+html
+    head
+        title= titulo
+
+    body
+        h1= titulo
+
+        ul
+            each pelicula in peliculas
+                li
+                    strong= pelicula.titulo
+                    |  - #{pelicula.genero} - #{pelicula.año}
+                    br
+                    img(src='/files/' + pelicula.foto, alt=pelicula.titulo, width="180")
+
+        a(href="/") Regresar al inicio
