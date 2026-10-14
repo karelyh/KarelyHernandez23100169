@@ -1,1 +1,4 @@
 2026-09-13 16:36:15 | ERROR | Usuario: ::1 | GET /peliculas/63 | Error 404 | Película no encontrada.
+2026-10-11 17:28:11 | ERROR | Usuario: ::1 | GET /peliculas/0 | Error 404 | Película no encontrada.
+2026-10-11 17:28:26 | ERROR | Usuario: ::1 | GET /peliculas/0 | Error 404 | Película no encontrada.
+2026-10-11 17:28:38 | ERROR | Usuario: ::1 | GET /peliculas/4 | Error 404 | Película no encontrada.
