@@ -1,0 +1,17 @@
+{
+  "name": "jsdoc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "miModulo.js",
+  "scripts": {
+    "docs": "jsdoc -c jsdoc.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "better-docs": "^2.7.3",
+    "jsdoc": "^4.0.5"
+  }
+}

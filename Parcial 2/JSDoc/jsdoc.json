@@ -1,0 +1,40 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "source": {
+    "include": ["./"],
+    "includePattern": ".js$",
+    "excludePattern": "(node_modules|out)"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "opts": {
+    "encoding": "utf8",
+    "destination": "./out",
+    "recurse": true,
+    "template": "node_modules/better-docs"
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "search": true,
+    "default": {
+      "staticFiles": {
+        "include": []
+      }
+    },
+    "better-docs": {
+      "name": "Mi módulo",
+      "title": "Documentación de mi módulo",
+      "hideGenerator": false,
+      "navLinks": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/"
+        }
+      ]
+    }
+  }
+}
