@@ -9,24 +9,24 @@ html(lang="es")
 
     p: a(href="/peliculas/vista") Ver películas
     p: a(href="/errores") Documentación de errores
+    p: a(href="/api-docs") Documentación de la API
 
     hr
     h3 Consultar API de Películas
     p
-      label(for="peliId") Buscar película por ID : 
+      label(for="peliId") Buscar película por ID:
       input(type="number", id="peliId")
       button(type="button", id="btnBuscar") Buscar
-    
+
     pre#resultadoConsulta
 
     script.
       document.getElementById('btnBuscar').addEventListener('click', async () => {
         const id = document.getElementById('peliId').value;
-        const apiKey = localStorage.getItem('miApiKey'); 
-        
-        // si no hay llave guardada se manda a iniciar sesión
+        const apiKey = localStorage.getItem('miApiKey');
+
         if (!apiKey) {
-          alert("Debes iniciar sesión primero para usar la API.");
+          alert('Debes iniciar sesión primero para usar la API.');
           window.location.href = '/login';
           return;
         }
@@ -36,14 +36,12 @@ html(lang="es")
         try {
           const respuesta = await fetch(url, {
             method: 'GET',
-            headers: { 
-              'x-api-key': apiKey 
-            }
+            headers: { 'x-api-key': apiKey }
           });
-          
+
           const data = await respuesta.json();
           document.getElementById('resultadoConsulta').textContent = JSON.stringify(data, null, 2);
         } catch (error) {
-          document.getElementById('resultadoConsulta').textContent = "Error de conexión con la API";
+          document.getElementById('resultadoConsulta').textContent = 'Error de conexión con la API';
         }
       });

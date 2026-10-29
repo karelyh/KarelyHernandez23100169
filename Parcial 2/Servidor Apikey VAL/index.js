@@ -9,18 +9,39 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 const validarApiKey = require('./middlewares/apikey');
 const manejarError = require('./middlewares/errores');
 const validarJoi = require('./middlewares/validarJoi');
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
+const { SwaggerTheme } = require('swagger-themes');
+
+// para inicializar la app
 const app = express();
 
-app.use(express.json());
+// rutas para que sean accesibles los recursos de imagenes
+app.use('/docs', express.static(path.join(__dirname, 'docs'))); 
+app.use('/files', express.static(path.join(__dirname, 'routers', 'files'))); 
 
-// para las vistas
+// DOCUMENTACIÓN SWAGGER: Configuración de la interfaz gráfica de OpenAPI
+const theme = new SwaggerTheme();
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    customCss: theme.getBuffer('feeling-blue'),
+    customSiteTitle: 'CineAPI - Documentación'
+}));
+
+// OpenAPI expuesta en formato JSON puro
+app.get('/api-spec', (req, res) => {
+    res.json(swaggerSpec);
+});
+
+// MIDDLEWARES GLOBALES
+app.use(express.json()); // Analiza las peticiones entrantes con cargas JSON
+app.use(morgan('dev')); // Registra en consola las peticiones HTTP para facilitar la depuración
+
+// pata tener las vistas
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-// Para Morgan
-app.use(morgan('dev'));
-app.use('/files', express.static(path.join(__dirname, 'routers', 'files')));
-
+// arreglito para tener datos en lo q hago una bd
 const peliculas = [
     { id: 1, titulo: "10 cosas que odio de ti", genero: "Romance / Comedia", año: 1999, duracion: 97, foto: "10CosasQueOdioDeTi.jpg" },
     { id: 8, titulo: "Coco", genero: "Animación / Fantasía", año: 2017, duracion: 105, foto: "coco.jpeg" },
@@ -28,32 +49,30 @@ const peliculas = [
     { id: 19, titulo: "Yo antes de ti pug version", genero: "Drama / Romance", año: 2016, duracion: 110, foto: "yoantesdetipug.jpg" }
 ];
 
+// validacion de datos que se reciben en un inicio
 const loginSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required()
 });
 
-// Ruta principal
+// rutas publicas
 app.get('/', (req, res) => {
     res.render('index', { titulo: 'Servidor funcionando' });
 });
 
-// Vista de login
 app.get('/login', (req, res) => {
     res.render('login');
 });
 
-// Ruta para mostrar la vista con las películas
 app.get('/peliculas/vista', (req, res) => {
     res.render('peliculas', { titulo: 'Listado de películas', peliculas: peliculas });
 });
 
-// Página de documentación de errores
 app.get('/errores', (req, res) => {
     res.render('errores', { titulo: 'Documentación de errores' });
 });
 
-// para el login
+// verificación de credenciales y, si valida contra el esquema Joi, devuelve la APIKey
 app.post('/login', validarJoi(loginSchema), (req, res) => {
     const { email, password } = req.body;
     if (email === 'karely@api.com' && password === 'karely123') {
@@ -65,19 +84,17 @@ app.post('/login', validarJoi(loginSchema), (req, res) => {
     return res.status(401).json({ error: 'Credenciales incorrectas' });
 });
 
-// Todas las rutas de abajo requieren una API key válida
+// seguridad para validar apikey
 app.use(validarApiKey);
 
-// Para el router
+// RUTAS PRIVADAS: Montaje del enrutador modular pasando el arreglo de datos
 const routerPeliculas = require('./routers/routerPeliculas')(peliculas);
-
-// Usar router
 app.use('/peliculas', routerPeliculas);
 
-// Manejador central de errores
+// manejo de errores, responde con un JSON formateado
 app.use(manejarError);
 
-// Iniciar servidor HTTPS de desarrollo
+// Servidor y certificados 
 const certificados = path.join(__dirname, 'certs');
 const servidor = https.createServer({
     key: fs.readFileSync(path.join(certificados, 'server.key')),

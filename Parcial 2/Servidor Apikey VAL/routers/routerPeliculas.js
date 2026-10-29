@@ -45,13 +45,37 @@ module.exports = (peliculas) => {
         });
     });
 
-    // GET /peliculas/pelicula/:pelicula
+    /**
+     * @openapi
+     * /peliculas/pelicula/{pelicula}:
+     *   get:
+     *     summary: Consultar una película por nombre
+     *     description: Devuelve un mensaje con el nombre de película recibido.
+     *     tags:
+     *       - Películas
+     *     parameters:
+     *       - in: path
+     *         name: pelicula
+     *         required: true
+     *         description: Nombre o título de la película
+     *         schema:
+     *           type: string
+     *     responses:
+     *       200:
+     *         description: Película recibida correctamente
+     *         content:
+     *           text/html:
+     *             schema:
+     *               type: string
+     *               example: "Película recibida: Coco"
+     *       401:
+     *         description: API Key inválida o faltante
+     */
     router.get('/pelicula/:pelicula', (req, res) => {
         const pelicula = req.params.pelicula;
         res.send(`Película recibida: ${pelicula}`);
     });
 
-    // GET /peliculas/:id
     router.get('/:id', validarId, (req, res, next) => {
     const id = parseInt(req.params.id);
     const pelicula = peliculas.find(pelicula => pelicula.id === id);

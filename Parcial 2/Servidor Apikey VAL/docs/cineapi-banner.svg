@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-labelledby="title description">
+  <title id="title">CineAPI</title>
+  <desc id="description">API REST de películas, versión 1.0.0, protegida con API Key.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#312e81"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="300" rx="28" fill="url(#background)"/>
+  <circle cx="1060" cy="150" r="102" fill="#f43f5e" opacity=".18"/>
+  <path d="M1018 98h84v104h-84zM1018 122h84M1038 98v24m22-24v24m22-24v24m-44 80v-24m22 24v-24m22 24v-24" fill="none" stroke="#fb7185" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/>
+  <text x="76" y="136" fill="#fff" font-family="Arial, sans-serif" font-size="68" font-weight="700">CineAPI</text>
+  <text x="80" y="188" fill="#c7d2fe" font-family="Arial, sans-serif" font-size="25">API REST de películas · OpenAPI 3.0</text>
+  <text x="80" y="235" fill="#a5b4fc" font-family="Arial, sans-serif" font-size="19">Node.js · Express · Autenticación por API Key</text>
+</svg>
