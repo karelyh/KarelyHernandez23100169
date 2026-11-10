@@ -114,6 +114,10 @@ const servidor = https.createServer({
     cert: fs.readFileSync(path.join(certificados, 'server.crt'))
 }, app);
 
-servidor.listen(3000, () => {
-    console.log('Servidor ejecutándose en https://localhost:3000');
-});
+if (require.main === module) {
+    servidor.listen(3000, () => {
+        console.log('Servidor ejecutándose en https://localhost:3000');
+    });
+}
+
+module.exports = app;
