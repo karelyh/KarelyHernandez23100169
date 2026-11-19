@@ -145,6 +145,116 @@ module.exports = (peliculas) => {
         res.send(`Película recibida: ${pelicula}`);
     });
 
+    /**
+     * @openapi
+     * /peliculas/{id}:
+     *   get:
+     *     summary: Consultar una película por ID
+     *     tags:
+     *       - Películas
+     *     description: |
+     *       Busca una película por su identificador y devuelve sus datos junto con enlaces HAL.
+     *
+     *       #### Ejemplo con cURL
+     *       ```bash
+     *       curl -k -X GET "https://localhost:3000/peliculas/8" \
+     *         -H "x-api-key: Karely123"
+     *       ```
+     *
+     *       #### Ejemplo con JavaScript (Fetch)
+     *       ```javascript
+     *       fetch('https://localhost:3000/peliculas/8', {
+     *           headers: { 'x-api-key': 'Karely123' }
+     *       })
+     *       .then(res => res.json())
+     *       .then(console.log);
+     *       ```
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         description: Identificador numérico de la película
+     *         schema:
+     *           type: integer
+     *           example: 8
+     *     responses:
+     *       200:
+     *         description: Película encontrada, con enlaces HAL
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 id:
+     *                   type: integer
+     *                   example: 8
+     *                 titulo:
+     *                   type: string
+     *                   example: Coco
+     *                 genero:
+     *                   type: string
+     *                   example: Animación / Fantasía
+     *                 año:
+     *                   type: integer
+     *                   example: 2017
+     *                 duracion:
+     *                   type: integer
+     *                   example: 105
+     *                 foto:
+     *                   type: string
+     *                   example: coco.jpeg
+     *                 _links:
+     *                   type: object
+     *                   properties:
+     *                     self:
+     *                       type: object
+     *                       properties:
+     *                         href:
+     *                           type: string
+     *                           example: /peliculas/8
+     *                     peliculas:
+     *                       type: object
+     *                       properties:
+     *                         href:
+     *                           type: string
+     *                           example: /peliculas
+     *       400:
+     *         description: El ID proporcionado no es válido
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 error:
+     *                   type: boolean
+     *                   example: true
+     *                 status:
+     *                   type: integer
+     *                   example: 400
+     *                 mensaje:
+     *                   type: string
+     *                   example: El ID proporcionado debe ser un número válido.
+     *       401:
+     *         description: API Key no proporcionada
+     *       403:
+     *         description: API Key no válida
+     *       404:
+     *         description: No se encontró una película con ese ID
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 error:
+     *                   type: boolean
+     *                   example: true
+     *                 status:
+     *                   type: integer
+     *                   example: 404
+     *                 mensaje:
+     *                   type: string
+     *                   example: Película no encontrada.
+     */
     router.get('/:id', validarId, (req, res, next) => {
     const id = parseInt(req.params.id);
     const pelicula = peliculas.find(pelicula => pelicula.id === id);
@@ -162,4 +272,4 @@ module.exports = (peliculas) => {
     });
 
     return router;
-};
+};d
